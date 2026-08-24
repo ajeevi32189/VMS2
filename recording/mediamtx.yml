@@ -1,0 +1,127 @@
+# # api: True
+# # rtsp: yes
+# # rtspAddress: :8554
+# # apiAddress: :9997
+# # apiAllowOrigin: '*'
+
+# # authMethod: internal
+# # authInternalUsers:
+# #   - user: any
+# #     pass:
+# #     permissions:
+# #       - action: api
+# #       - action: read
+
+
+
+# # paths:
+# #   cam1:
+# #     source: rtsp://admin:admin%40123@14.195.152.243:554/cam/realmonitor?channel=5&subtype=0&unicast=true&proto=Onvif
+# #     sourceProtocol: tcp
+# #     sourceOnDemand: no
+# #     record: False
+# #     recordPath: /recordings/%path/%Y-%m-%d_%H-%M-%S
+# #     recordFormat: mpegts         #fmp4
+# #     recordSegmentDuration: 1h
+
+
+
+# # ## Postman se directly call karo — FastAPI ki zaroorat nahi:
+# # ```
+# # POST http://127.0.0.1:9997/v3/recordings/start/cam1
+# # POST http://127.0.0.1:9997/v3/recordings/stop/cam1
+# # GET  http://127.0.0.1:9997/v3/recordings/list
+
+
+
+
+
+
+
+# api: true
+# apiAddress: 0.0.0.0:9997
+
+# rtsp: true
+# rtspAddress: :8554
+# apiAddress: :9997
+# apiAllowOrigin: '*'
+
+# authMethod: internal
+# authInternalUsers:
+#   - user: any
+#     pass:
+#     permissions:
+#       - action: api
+#       - action: read
+
+# # Global recording defaults
+# # record: false rakhna zaroori hai taaki auto-recording na ho
+# # UI toggle se FastAPI /api/v1/record/start call karegi jo ise true karega
+# record: false
+# recordPath: /recordings/%path/%Y-%m-%d_%H-%M-%S
+# recordFormat: mpegts
+# recordSegmentDuration: 1h
+
+# paths:
+#   cam1:
+#     source: rtsp://admin:admin%40123@14.195.152.243:554/cam/realmonitor?channel=5&subtype=0&unicast=true&proto=Onvif
+#     sourceProtocol: tcp
+#     sourceOnDemand: yes       # Camera tab connect ho jab koi request aaye
+
+#     record: false             # Recording tab shuru ho jab UI toggle kare
+#     recordPath: /recordings/%path/%Y-%m-%d_%H-%M-%S
+#     recordFormat: mpegts
+#     recordSegmentDuration: 1h
+
+#     # Agar camera disconnect ho jaye to baar baar retry karo
+#     sourceOnDemandCloseAfter: 0s   # kabhi band mat karo
+
+
+
+
+
+
+
+
+
+api: yes
+apiAddress: 0.0.0.0:9997
+apiAllowOrigin: '*'
+
+rtsp: yes
+rtspAddress: :8554
+
+authMethod: internal
+authInternalUsers:
+  - user: any
+    pass:
+    permissions:
+      - action: api
+      - action: read
+
+record: no
+recordPath: /recordings/%path/%Y-%m-%d_%H-%M-%S
+recordFormat: mpegts
+recordSegmentDuration: 1h
+
+paths:
+  all:
+    source: publisher
+
+
+
+
+
+
+
+
+
+# api: yes
+# apiAddress: 0.0.0.0:9997
+
+# paths:
+#   all:
+#     record: yes
+#     recordPath: /recordings/%path/%Y-%m-%d_%H-%M-%S.mp4
+
+

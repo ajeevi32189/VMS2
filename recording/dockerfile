@@ -1,0 +1,66 @@
+# # Production-ready slim image to save disk space and improve performance
+# FROM python:3.10-slim
+
+# # 1. Environment variables to optimize Python for Docker
+# # PYTHONUNBUFFERED=1 ensures logs are sent immediately to terminal (no buffering)
+# ENV PYTHONUNBUFFERED=1
+# # PYTHONDONTWRITEBYTECODE=1 prevents creation of .pyc files (cleaner container)
+# ENV PYTHONDONTWRITEBYTECODE=1
+# # Default MediaMTX API URL (overridable at runtime)
+# ENV MTX_API=http://mediamtx:9997
+
+# WORKDIR /app
+
+# # 2. Install essential system libraries for OpenCV/ONVIF
+# # even "headless" opencv sometimes requires glib2.0-0
+# RUN apt-get update && apt-get install -y --no-install-recommends \
+#     libglib2.0-0 \
+#     && rm -rf /var/lib/apt/lists/*
+
+# # 3. Layered caching for requirements (faster rebuilds)
+# COPY requirements.txt .
+# RUN pip install --no-cache-dir -r requirements.txt
+
+# # 4. Copy local source code to container
+# COPY . .
+
+# # 5. Create volume directory for recordings
+# RUN mkdir -p /app/
+
+# # FastAPI service port
+# EXPOSE 8001
+
+# # 6. Run the application
+# CMD ["python", "main.py"]
+
+
+
+
+
+
+
+
+FROM python:3.10-slim
+
+ENV PYTHONUNBUFFERED=1
+ENV PYTHONDONTWRITEBYTECODE=1
+ENV MTX_API=http://mediamtx:9997
+
+WORKDIR /app
+
+RUN apt-get update && apt-get install -y --no-install-recommends \
+    libglib2.0-0 \
+    curl \
+    ffmpeg \
+    && rm -rf /var/lib/apt/lists/*
+
+COPY requirements.txt .
+RUN pip install --no-cache-dir -r requirements.txt
+
+COPY . .
+
+# RUN mkdir -p /recordings
+
+EXPOSE 8001
+
+CMD ["uvicorn", "main:app", "--host", "0.0.0.0", "--port", "8001"]
