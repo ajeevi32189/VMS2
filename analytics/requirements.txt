@@ -1,0 +1,135 @@
+# # -----------------------
+# # Core utilities
+# # -----------------------
+# certifi==2026.1.4
+# charset-normalizer==3.4.4
+# idna==3.11
+# urllib3==2.6.3
+# requests==2.32.5
+# PyYAML==6.0.3
+# six==1.17.0
+# typing_extensions==4.15.0
+# packaging==25.0
+# filelock==3.20.2
+# psutil==7.2.1
+
+# # -----------------------
+# # Messaging
+# # -----------------------
+# pika==1.3.2
+
+# # -----------------------
+# # Math / Scientific (CRITICAL FIX)
+# # -----------------------
+# numpy==1.26.4
+# scipy==1.11.4
+# mpmath==1.3.0
+# sympy==1.14.0
+# networkx==3.2.1
+
+# # -----------------------
+# # Image / Video
+# # -----------------------
+# opencv-python==4.10.0.84
+# pillow==10.4.0
+# ImageIO==2.34.1
+# tifffile==2024.9.20
+# scikit-image==0.22.0
+# lazy_loader==0.4
+
+# # -----------------------
+# # Visualization
+# # -----------------------
+# matplotlib==3.8.4
+# contourpy==1.3.2
+# cycler==0.12.1
+# kiwisolver==1.4.5
+# fonttools==4.53.1
+# pyparsing==3.1.2
+# python-dateutil==2.9.0.post0
+
+# # -----------------------
+# # Ultralytics / YOLO
+# # -----------------------
+# ultralytics==8.3.244
+# ultralytics-thop==2.0.18
+# deep-sort-realtime==1.3.2
+
+
+# =====================================================
+# PyTorch + ONNX Runtime — CUDA 13.2 server
+# =====================================================
+# CUDA 13.x is forward-compatible with CUDA 12.x libraries.
+# cu128 (CUDA 12.8) wheels are the closest stable build and work
+# correctly on a CUDA 13.2 host via forward compatibility.
+--extra-index-url https://download.pytorch.org/whl/cu128
+
+torch>=2.5.0
+torchvision>=0.20.0
+torchaudio>=2.5.0
+
+
+# -----------------------
+# Core utilities
+# -----------------------
+certifi==2026.1.4
+charset-normalizer==3.4.4
+idna==3.11
+urllib3==2.6.3
+requests==2.32.5
+PyYAML==6.0.3
+six==1.17.0
+typing_extensions==4.15.0
+packaging==25.0
+filelock==3.20.2
+psutil==7.2.1
+
+# -----------------------
+# Messaging
+# -----------------------
+pika==1.3.2
+
+# -----------------------
+# Math / Scientific
+# -----------------------
+numpy==1.26.4
+scipy==1.11.4
+mpmath==1.3.0
+sympy==1.14.0
+networkx==3.2.1
+
+# -----------------------
+# Image / Video
+# -----------------------
+opencv-python==4.10.0.84
+pillow==10.4.0
+imageio==2.34.1
+tifffile==2024.9.20
+scikit-image==0.22.0
+lazy_loader==0.4
+
+# -----------------------
+# Visualization
+# -----------------------
+matplotlib==3.8.4
+contourpy==1.3.2
+cycler==0.12.1
+kiwisolver==1.4.5
+fonttools==4.53.1
+pyparsing==3.1.2
+python-dateutil==2.9.0.post0
+
+# -----------------------
+# Ultralytics / Tracking
+# -----------------------
+ultralytics==8.3.244
+ultralytics-thop==2.0.18
+deep-sort-realtime==1.3.2
+easyocr>=1.7.0
+
+# -----------------------
+# Face Analysis
+# -----------------------
+insightface==0.7.3
+# onnxruntime-gpu: 1.20+ supports CUDA 12.x and is forward-compatible with CUDA 13.2
+onnxruntime-gpu>=1.20.0
