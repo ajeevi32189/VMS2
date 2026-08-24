@@ -1,0 +1,18 @@
+# Base image
+FROM python:3.10-slim
+
+# Working directory set karo
+WORKDIR /app
+
+# Requirements file copy karo aur install karo
+COPY requirements.txt .
+RUN pip install --no-cache-dir -r requirements.txt
+
+# Baaki ka code copy karo
+COPY main.py . 
+
+# Port 8000 expose karo
+EXPOSE 8000
+
+# Server run karne ki command
+CMD ["uvicorn", "main:app", "--host", "0.0.0.0", "--port", "8000"]
