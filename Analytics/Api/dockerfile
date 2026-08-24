@@ -1,0 +1,31 @@
+# Use a lightweight Python base image
+FROM python:3.12-slim
+
+# Set working directory
+WORKDIR /app
+
+# Install OS dependencies needed to build Python packages at runtime
+RUN apt-get update && apt-get install -y \
+    gcc \
+    libpq-dev \
+    curl \
+    && rm -rf /var/lib/apt/lists/*
+
+# Copy requirements first to leverage Docker cache
+COPY requirements.txt .
+
+# Install Python dependencies during build
+RUN pip install --no-cache-dir -r requirements.txt
+
+# Copy all application code
+COPY . .
+
+# Expose Flask port
+EXPOSE 7001
+
+# Default env vars — override in docker-compose
+ENV PYTHONUNBUFFERED=1
+ENV CAMERAS_PER_GROUP=10
+
+# Run the app at container startup
+CMD ["python", "vms_api.py"]
