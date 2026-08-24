@@ -1,0 +1,35 @@
+# Use a lightweight Python base image
+FROM python:3.12-slim
+
+
+# Set working directory
+WORKDIR /app
+
+# Install system dependencies required for OpenCV and RabbitMQ
+RUN apt-get update && apt-get install -y \
+    gcc \
+    libsm6 \
+    libxext6 \
+    libxrender-dev \
+    libglib2.0-0 \
+    ffmpeg \
+    libgl1 \
+    curl \
+    && rm -rf /var/lib/apt/lists/*
+
+# Copy requirements first to leverage Docker cache
+COPY requirements.txt .
+
+# Install Python dependencies during build
+RUN pip install --no-cache-dir -r requirements.txt
+
+# Copy all application code
+COPY . .
+
+# Default env vars — override in docker-compose
+ENV PYTHONUNBUFFERED=1
+ENV WRITER_QUEUE=video_analytics
+# API_URL and CREDIT_URL are set via docker-compose environment section
+
+# Run the script at runtime
+CMD ["python", "write_analytics.py"]
