@@ -1,0 +1,38 @@
+
+# Use a lightweight base image with Python 3.12
+FROM python:3.12-slim
+
+# Set the working directory in the container
+WORKDIR /app
+
+# Install system dependencies required for OpenCV and RabbitMQ
+RUN apt-get update && apt-get install -y \
+    gcc \
+    libglib2.0-0 \
+    libsm6 \
+    libxrender1 \
+    libxext6 \
+    ffmpeg \
+    libgl1 \
+    curl \
+    && rm -rf /var/lib/apt/lists/*
+
+# Copy requirements first to leverage Docker cache
+COPY requirements.txt .
+
+# Install Python dependencies during build
+RUN pip install --no-cache-dir -r requirements.txt
+
+# Copy application code
+COPY . .
+
+# Expose port if needed
+# EXPOSE 7001
+
+# Default env vars — override these in docker-compose per framer instance
+ENV PYTHONUNBUFFERED=1
+ENV FRAMER_GROUP=1
+ENV RABBITMQ_HOST=rabbitmq
+
+# Run the app at container startup
+CMD ["python", "vms_framer.py"]
