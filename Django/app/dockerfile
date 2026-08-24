@@ -1,0 +1,127 @@
+# FROM python:3.11-slim
+# #FROM debian:buster-slim
+
+
+# WORKDIR . 
+
+# RUN apt-get update && apt-get install -y \
+#     python3-dev \
+#     default-libmysqlclient-dev \
+#     build-essential \
+#     pkg-config \
+#     && rm -rf /var/lib/apt/lists/*
+
+# COPY requirements.txt .
+
+
+# RUN pip install -r requirements.txt
+
+# RUN pip install --no-cache-dir -r requirements.txt
+
+# # ENV PYTHONUNBUFFERED 1
+
+# ENV DJANGO_SETTINGS_MODULE core.settings
+
+
+# EXPOSE 6054
+# CMD ["python", "manage.py", "runserver","0.0.0.0:6054"]
+
+
+
+###############################################################################################################
+####################################################################################################
+##############################################################################################
+
+
+
+# FROM python:3.12-slim
+
+
+# # Clear Python cache to prevent marshal errors
+# RUN find . -type d -name __pycache__ -exec rm -rf {} + 2>/dev/null || true
+# RUN find . -type f -name "*.pyc" -delete 2>/dev/null || true
+
+# # Set working directory
+# WORKDIR /app
+
+# # Install system dependencies
+# RUN apt-get update && apt-get install -y \
+#     python3-dev \
+#     default-libmysqlclient-dev \
+#     build-essential \
+#     pkg-config \
+#     && rm -rf /var/lib/apt/lists/*
+
+# # Copy requirements and project files
+# ENV ICCC_API=https://co2ph3master.ajeevi.in
+
+# # Database connection environment variables
+# ENV DB_ENGINE=django.db.backends.mysql
+# ENV DB_NAME=new_vms
+# ENV DB_USER=vms
+# ENV DB_PASSWORD=Ajeevi@#321890
+# ENV DB_HOST=sqldb
+# ENV DB_PORT=3306
+
+# COPY . .
+
+# # Set environment variable for Django
+# ENV DJANGO_SETTINGS_MODULE=core.settings
+
+# # Expose the port the app will run on
+# EXPOSE 7006
+
+# # Install Python dependencies and run Django server at container start
+# CMD pip install --no-cache-dir -r requirements.txt && python manage.py runserver 0.0.0.0:7006
+
+# # Add entrypoint
+# COPY entrypoint.sh /entrypoint.sh
+# RUN chmod +x /entrypoint.sh
+
+# ENTRYPOINT ["/entrypoint.sh"]
+
+
+
+FROM python:3.12-slim
+
+# Set working directory
+WORKDIR /app
+
+# Install system dependencies
+RUN apt-get update && apt-get install -y \
+    python3-dev \
+    default-libmysqlclient-dev \
+    build-essential \
+    pkg-config \
+    netcat-openbsd \
+    && rm -rf /var/lib/apt/lists/*
+
+# Copy requirements first (better caching)
+COPY requirements.txt .
+
+# Install dependencies (ONLY once at build time)
+RUN pip install --no-cache-dir -r requirements.txt
+
+# Copy project files
+COPY . .
+
+# Environment variables
+ENV DJANGO_SETTINGS_MODULE=core.settings
+ENV ICCC_API=https://co2ph3master.ajeevi.in
+ENV VMS_IMAGE_BASE_URL=http://14.195.152.244:9006
+
+ENV DB_ENGINE=django.db.backends.mysql
+ENV DB_NAME=new_vms
+ENV DB_USER=vms
+ENV DB_PASSWORD=Ajeevi@#321890
+ENV DB_HOST=sqldb
+ENV DB_PORT=3306
+
+# Expose port
+EXPOSE 7006
+
+# Add entrypoint
+COPY entrypoint.sh /entrypoint.sh
+RUN chmod +x /entrypoint.sh
+
+ENTRYPOINT ["/entrypoint.sh"]
