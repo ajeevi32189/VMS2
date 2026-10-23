@@ -1,0 +1,45 @@
+# Use NGINX to serve the static files
+FROM nginx:alpine
+
+# Copy built files from Vite
+COPY dist/ /usr/share/nginx/html
+
+# Copy your custom NGINX config
+COPY nginx.conf /etc/nginx/conf.d/default.conf
+
+# (Optional) Copy your env injector script
+COPY env.sh /env.sh
+RUN chmod +x /env.sh
+
+ENV API_URL=https://usermanagementmsvms.gyanakshi.com/api
+ENV CAMERA_API_URL=https://vmscameraapi.gyanakshi.com/api
+ENV STREAMING_API_URL=https://vmsstreamapi.gyanakshi.com
+ENV GO2RTC_URL=https://vmsgotortc.gyanakshi.com
+ENV ONVIF_API_URL=https://vmsonvifapi.gyanakshi.com
+ENV RECORDING_API_URL=https://vmsrecordingapi.gyanakshi.com
+ENV ANALYTICS_API_URL=https://vmsanalyticsapi.gyanakshi.com
+ENV ROI_API_URL=https://roi.gyanakshi.com
+ENV TICKET_API_URL=https://ticketmanagementms.ajeevi.in
+ENV ONVIFGO2RTC_URL=https://vmsgotortc.gyanakshi.com
+# VITE_API_URL=
+# VITE_CAMERA_API_URL=https://vmscameraapi.ajeevi.in/api
+# VITE_STREAMING_API_URL=
+# VITE_GO2RTC_URL=https://vmsgotortc.ajeevi.in
+# VITE_ONVIFGO2RTC_URL=https://vmsgotortc.gyanakshi.com
+# VITE_ONVIF_API_URL=https://vmsonvifapi.ajeevi.in
+# VITE_RECORDING_API_URL=https://vmsrecordingapi.ajeevi.in
+# VITE_ANALYTICS_API_URL=https://vmsanalyticsapi.ajeevi.in
+# VITE_ROI_API_URL=https://roi.gyanakshi.com
+# VITE_TICKET_API_URL=https://ticketmanagementms.ajeevi.in
+
+
+# Run env script then start NGINX
+ENTRYPOINT ["/env.sh"]
+CMD ["nginx", "-g", "daemon off;"]
+
+# docker build -t vms_2.0 .
+
+# docker buildx build --platform linux/amd64,linux/arm64 --tag ajeevi32189/vms_2.0:vms_ui_test --push .
+# docker buildx build --platform linux/amd64,linux/arm64 --tag ajeevi32189/vms_2.0:vms1_ui1_stqc1 --push .
+
+# docker run -p 5050:80 vms_2.0
